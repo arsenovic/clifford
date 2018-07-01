@@ -185,7 +185,7 @@ from warnings import warn
 
 # Major library imports.
 import numpy as np
-from numpy import linalg, array
+from numpy import linalg, array, nonzero
 import numba
 
 # The blade finding regex for parsing strings of mvs
@@ -1639,6 +1639,12 @@ class MultiVector(object):
 
         b = [value[0]] + [value[k]*blades_list[k] for k in range(1, len(self))]
         return [k for k in b if k != 0]
+    
+    def blades_list_nonzero(self):
+        '''
+        ordered list of blades present in this MV, without values
+        '''
+        return [self.layout.blades_list[k] for k in nonzero(self.value)[0]]
 
     def normal(self):
         """Return the (mostly) normalized multivector.
